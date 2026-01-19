@@ -1,6 +1,6 @@
 ### 1. Visão geral
 
-![Diagrama de arquitetura](diagrama.png)
+![Diagrama de arquitetura](diagram.png)
 
 Este repositório contém uma **API REST** desenvolvida em **Spring Boot 3** para realizar operações de CRUD de **Produtos** (`Product`).
 A aplicação utiliza:
