@@ -1,16 +1,52 @@
-version: '3.1'
-
 services:
-  db:
-    image: postgres
-    restart: always
+  postgres_crud:
+    image: postgres:16
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_DB: ${CRUD_DB_NAME}
+      POSTGRES_USER: ${CRUD_DB_USER}
+      POSTGRES_PASSWORD: ${CRUD_DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${CRUD_DB_PORT}:5432"
+    volumes:
+      - pg_crud:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${CRUD_DB_USER} -d ${CRUD_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
-  adminer:
-    image: adminer
-    restart: always
+  postgres_keycloak:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${KC_DB_NAME}
+      POSTGRES_USER: ${KC_DB_USER}
+      POSTGRES_PASSWORD: ${KC_DB_PASSWORD}
     ports:
-      - "8080:8080"
+      - "${KC_DB_PORT}:5432"
+    volumes:
+      - pg_keycloak:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${KC_DB_USER} -d ${KC_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    depends_on:
+      postgres_keycloak:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: ${KC_JDBC_URL}
+      KC_DB_USERNAME: ${KC_DB_USER}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+    ports:
+      - "${KEYCLOAK_PORT}:8080"
+    command: start-dev
+
+volumes:
+  pg_crud:
+  pg_keycloak:

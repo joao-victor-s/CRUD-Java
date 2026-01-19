@@ -3,6 +3,7 @@ package com.crudjava.controller;
 import com.crudjava.dto.ProductRequest;
 import com.crudjava.dto.ProductResponse;
 import com.crudjava.service.ProductService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
+@SecurityRequirement(name = "Authorize")
 @RequestMapping(path="/api/products")
 public class ProductController {
     private final ProductService productService;
