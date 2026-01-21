@@ -1,4 +1,4 @@
-package com.crudjava.controller;
+package com.crudjava.interfaces;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
