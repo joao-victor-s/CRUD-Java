@@ -1,8 +1,8 @@
-package com.crudjava.controller;
+package com.crudjava.interfaces;
 
-import com.crudjava.dto.ProductRequest;
-import com.crudjava.dto.ProductResponse;
-import com.crudjava.service.ProductService;
+import com.crudjava.application.dto.ProductRequest;
+import com.crudjava.application.dto.ProductResponse;
+import com.crudjava.application.service.ProductService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.crudjava.dto;
+package com.crudjava.application.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;

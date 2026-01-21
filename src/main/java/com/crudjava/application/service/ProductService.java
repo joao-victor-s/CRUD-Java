@@ -1,9 +1,9 @@
-package com.crudjava.service;
+package com.crudjava.application.service;
 
-import com.crudjava.dto.ProductRequest;
-import com.crudjava.dto.ProductResponse;
-import com.crudjava.entity.Product;
-import com.crudjava.repository.ProductRepository;
+import com.crudjava.application.dto.ProductRequest;
+import com.crudjava.application.dto.ProductResponse;
+import com.crudjava.product.domain.model.Product;
+import com.crudjava.infra.persistence.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -31,10 +31,7 @@ public class ProductService {
 
     @Transactional
     public ProductResponse saveProduct(ProductRequest dto) {
-        Product product = new Product();
-        product.setName(dto.name());
-        product.setPrice(dto.price());
-
+        Product product = Product.create(dto.name(), dto.price());
         Product p = productRepository.save(product);
         return toResponse(p);
     }
@@ -42,9 +39,7 @@ public class ProductService {
     @Transactional
     public ProductResponse updateProduct(ProductRequest product, Long id) {
         Product oldProduct = findProductById(id);
-
-        oldProduct.setName(product.name());
-        oldProduct.setPrice(product.price());
+        oldProduct.update(product.name(), product.price());
         Product p = productRepository.save(oldProduct);
 
         return toResponse(p);
